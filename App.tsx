@@ -1,18 +1,54 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { useState } from 'react';
+import { Button, TextInput, TouchableOpacity, StyleSheet, Text, View } from 'react-native';
 
 export default function App() {
+
+  const [count, setCount] = useState<number>(0)
+  const [name, setName] = useState<string>("")
+  const [age, setAge] = useState<number>(0)
+
+
   return (
     <View style={styles.container}>
       <View>
-        <Text style={styles.header}>Hoang tan dung</Text>
-        <Text style={styles.parent}>
-          1
-          <Text style={styles.child}>2</Text>
-        </Text>
+        <Text style={{ fontSize: 40, fontWeight: "600" }}>name: {name}</Text>
+        <TextInput
+          multiline
+          autoCapitalize="words"
+          onChangeText={(value) => setName(value)}
+          style={{
+            borderColor: "green",
+            borderWidth: 1,
+            padding: 10,
+            width: 200
+          }}
+        />
       </View>
-      <Text style={styles.hello1}>
-        Hoang Tan Dung 1</Text>
-      <Text>Hoang Tan Dung 2</Text>
+
+      <View>
+        <Text style={{ fontSize: 40, fontWeight: "600" }}>age: {age}</Text>
+        <TextInput
+          multiline
+          onChangeText={(value) => setAge(+value)}
+          style={{
+            borderColor: "green",
+            borderWidth: 1,
+            padding: 10,
+            width: 200
+          }}
+          keyboardType='numeric'
+          maxLength={2}
+        />
+      </View>
+      <Text style={{ fontSize: 40, fontWeight: "600" }}>
+        count={count}
+      </Text>
+      <View>
+        <Button title='Increase'
+          onPress={() => setCount(count + 1)}
+        />
+      </View>
+
     </View>
   );
 }
@@ -24,22 +60,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  hello1: {
-    color: "red", fontSize: 40,
-    borderColor: "green",
-    borderWidth: 1,
-    padding: 10
-  },
-  header: {
-    fontSize: 30,
-    fontWeight: "600"
-  },
-  parent: {
-    fontSize: 30,
-    color: "green"
-  },
-  child: {
-    fontSize: 30,
-    color: "pink"
+  button: {
+    backgroundColor: "#2196F3",
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
   }
 });
