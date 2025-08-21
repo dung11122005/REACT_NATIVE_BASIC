@@ -1,69 +1,140 @@
 import { useState } from 'react';
-import { Button, TextInput, TouchableOpacity, StyleSheet, Text, View } from 'react-native';
+import {
+  Button, FlatList, TextInput,
+  TouchableOpacity, StyleSheet,
+  Text, View, ScrollView,
+  Pressable,
+  Alert,
+  TouchableWithoutFeedback,
+  Keyboard
+} from 'react-native';
+import { Item } from 'react-native-paper/lib/typescript/components/Drawer/Drawer';
+import AntDesign from '@expo/vector-icons/AntDesign';
+
+
+interface ITodo {
+  id: number;
+  name: string;
+}
 
 export default function App() {
 
-  const [count, setCount] = useState<number>(0)
-  const [name, setName] = useState<string>("")
-  const [age, setAge] = useState<number>(0)
+  const [todo, setTodo] = useState<string>("")
 
+  const [listTodo, setListTodo] = useState<ITodo[]>([])
+
+  function randomInteger(min: number, max: number) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  const handleAddTodo = () => {
+    if (!todo) {
+      Alert.alert("lỗi input todo", "todo không được để trống",
+        [
+          // {
+          //   text: 'Cancel',
+          //   onPress: () => console.log('Cancel Pressed'),
+          //   style: 'cancel',
+          // },
+          { text: 'Xác nhận', onPress: () => console.log('OK Pressed') },
+        ]
+      )
+      return
+    }
+    setListTodo([...listTodo, { id: randomInteger(1, 100), name: todo }])
+    setTodo("")
+  }
+
+  const deleteTodo = (id: number) => {
+    const newListTodo = listTodo.filter(Item => Item.id !== id)
+    setListTodo(newListTodo)
+  }
 
   return (
-    <View style={styles.container}>
-      <View>
-        <Text style={{ fontSize: 40, fontWeight: "600" }}>name: {name}</Text>
-        <TextInput
-          multiline
-          autoCapitalize="words"
-          onChangeText={(value) => setName(value)}
-          style={{
-            borderColor: "green",
-            borderWidth: 1,
-            padding: 10,
-            width: 200
-          }}
-        />
-      </View>
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss}>
+      <View style={styles.container}>
+        {/* {header} */}
+        <Text style={styles.header}>Todo App</Text>
 
-      <View>
-        <Text style={{ fontSize: 40, fontWeight: "600" }}>age: {age}</Text>
-        <TextInput
-          multiline
-          onChangeText={(value) => setAge(+value)}
-          style={{
-            borderColor: "green",
-            borderWidth: 1,
-            padding: 10,
-            width: 200
-          }}
-          keyboardType='numeric'
-          maxLength={2}
-        />
-      </View>
-      <Text style={{ fontSize: 40, fontWeight: "600" }}>
-        count={count}
-      </Text>
-      <View>
-        <Button title='Increase'
-          onPress={() => setCount(count + 1)}
-        />
-      </View>
+        {/* {form} */}
+        <View style={styles.form}>
+          <TextInput style={styles.todoInput}
+            onChangeText={(value) => setTodo(value)}
+          />
+          <Button title='Add todo'
+            onPress={handleAddTodo}
+          />
+        </View>
 
-    </View>
+        {/* {List todo} */}
+        <View style={styles.todo}>
+          <FlatList
+            data={listTodo}
+            keyExtractor={item => item.id.toString()}
+            renderItem={(data) => {
+              return (
+                <Pressable onPress={() => deleteTodo(data.item.id)}>
+                  <View style={styles.groupTodo}>
+                    <Text style={styles.todoItem}>{data.item.name}</Text>
+                    <AntDesign name="close" size={24} color="black" />
+                  </View>
+                </Pressable>
+              )
+            }}
+          />
+        </View>
+
+      </View>
+    </TouchableWithoutFeedback>
+    // <FlexBox></FlexBox>
   );
 }
 
 const styles = StyleSheet.create({
+
   container: {
+    paddingTop: 50,
+    // paddingHorizontal: 20,
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    // alignItems: 'center',
+    // justifyContent: 'center',
   },
-  button: {
-    backgroundColor: "#2196F3",
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 8,
+  header: {
+    backgroundColor: "orange",
+    paddingHorizontal: 30,
+    textAlign: "center",
+    fontSize: 30,
+    flex: 1
+  },
+  form: {
+    // flex: 2
+    marginBottom: 20
+  },
+  todo: {
+    flex: 8
+  },
+  todoInput: {
+    padding: 5,
+    borderBottomWidth: 1,
+    borderBottomColor: "green",
+    margin: 15
+  },
+  todoItem: {
+    fontSize: 30,
+    // marginBottom: 20,
+    padding: 10
+  },
+  body: {
+    marginBottom: 20
+  },
+  groupTodo: {
+    padding: 5,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderStyle: 'dashed',
+    marginBottom: 15,
+    justifyContent: 'space-between'
   }
 });
