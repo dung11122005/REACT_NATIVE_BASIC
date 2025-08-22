@@ -10,6 +10,9 @@ import { FONTS } from "./constants/fonts";
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import 'react-native-gesture-handler';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+
 
 SplashScreen.preventAutoHideAsync();
 
@@ -28,6 +31,7 @@ const App = () => {
     }
 
     const Stack = createNativeStackNavigator();
+    const Drawer = createDrawerNavigator();
 
     return (
         <NavigationContainer>
@@ -36,7 +40,10 @@ const App = () => {
                     name="Home" component={HomeScreen}
                     options={{ title: 'Trang chủ' }}
                 />
-                <Stack.Screen name="ReviewDetail" component={DetailScreen} />
+                <Stack.Screen
+                    name="DetailScreen" component={DetailScreen}
+                    options={{ title: 'Chi tiết review' }}
+                />
             </Stack.Navigator>
         </NavigationContainer>
     )
