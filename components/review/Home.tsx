@@ -22,13 +22,19 @@ const HomeScreen = () => {
 
     const [modalVisible, setModalVisible] = useState(false);
 
+    const addNew = (item: IReview) => {
+        setReviews([...reviews, item])
+    }
+
     return (
         <View>
             <Text style={{ fontSize: 30, padding: 10 }}>
                 Review List
             </Text>
             <View style={{ alignItems: "center" }}>
-                <AntDesign name="plussquareo" size={30} color="orange" />
+                <AntDesign name="plussquareo" size={30} color="orange"
+                    onPress={() => setModalVisible(true)}
+                />
             </View>
 
             <View>
@@ -54,6 +60,7 @@ const HomeScreen = () => {
                 <CreateModal
                     modalVisible={modalVisible}
                     setModalVisible={setModalVisible}
+                    addNew={addNew}
                 />
             </View>
 
