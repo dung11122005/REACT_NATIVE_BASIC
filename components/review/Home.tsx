@@ -1,7 +1,9 @@
 import { NavigationProp, RouteProp, useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import { Button, FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-
+import AppHeader from "../navigation/AppHeader";
+import CreateModal from "./CreateModal";
+import AntDesign from '@expo/vector-icons/AntDesign';
 
 interface IReview {
     id: number;
@@ -9,7 +11,7 @@ interface IReview {
     star: number;
 }
 
-const HomeScreen = (props: any) => {
+const HomeScreen = () => {
 
     const navigation: NavigationProp<RootStackParamList> = useNavigation();
 
@@ -18,11 +20,17 @@ const HomeScreen = (props: any) => {
         { id: 2, title: "Tan Dung", star: 5 }
     ])
 
+    const [modalVisible, setModalVisible] = useState(false);
+
     return (
         <View>
-            <Text style={{ fontSize: 30 }}>
+            <Text style={{ fontSize: 30, padding: 10 }}>
                 Review List
             </Text>
+            <View style={{ alignItems: "center" }}>
+                <AntDesign name="plussquareo" size={30} color="orange" />
+            </View>
+
             <View>
                 <FlatList
                     data={reviews}
@@ -42,9 +50,13 @@ const HomeScreen = (props: any) => {
                     }}
                 />
             </View>
-            <Button title="viewDetail"
-                onPress={() => navigation.navigate("DetailScreen")}
-            />
+            <View>
+                <CreateModal
+                    modalVisible={modalVisible}
+                    setModalVisible={setModalVisible}
+                />
+            </View>
+
         </View>
     )
 }

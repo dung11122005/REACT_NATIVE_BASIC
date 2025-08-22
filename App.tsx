@@ -2,7 +2,6 @@ import { Text, View } from "react-native"
 import HomeScreen from "./components/review/Home"
 import DetailScreen from "./components/review/Detail"
 import AboutScreen from "./components/review/About"
-
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
@@ -12,6 +11,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import 'react-native-gesture-handler';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import AppNavigation from "./components/navigation/AppNavigation";
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 SplashScreen.preventAutoHideAsync();
@@ -34,18 +35,11 @@ const App = () => {
     const Drawer = createDrawerNavigator();
 
     return (
-        <NavigationContainer>
-            <Stack.Navigator>
-                <Stack.Screen
-                    name="Home" component={HomeScreen}
-                    options={{ title: 'Trang chủ' }}
-                />
-                <Stack.Screen
-                    name="DetailScreen" component={DetailScreen}
-                    options={{ title: 'Chi tiết review' }}
-                />
-            </Stack.Navigator>
-        </NavigationContainer>
+        <SafeAreaView style={{ flex: 1 }}>
+            <NavigationContainer>
+                <AppNavigation />
+            </NavigationContainer>
+        </SafeAreaView>
     )
 }
 

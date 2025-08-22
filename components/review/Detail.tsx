@@ -1,7 +1,9 @@
-import { Button, StyleSheet, Text, View } from "react-native";
+import { Button, Image, StyleSheet, Text, View } from "react-native";
 import { useNavigation, NavigationProp, RouteProp } from '@react-navigation/native';
 import { FONTS } from "../../constants/fonts";
 import { useRoute } from '@react-navigation/native';
+import starIcon from "../../assets/images/star.png"
+
 
 const styles = StyleSheet.create({
     review: {
@@ -25,6 +27,12 @@ const DetailScreen = () => {
             <Text style={styles.reviewText}>Id: {route.params?.id}</Text>
             <Text style={styles.reviewText}>Tiêu đề: {route.params?.title}</Text>
             <Text style={styles.reviewText}>Rating: {route.params?.star}</Text>
+            <View style={{ flexDirection: 'row', marginHorizontal: 10, gap: 15 }}>
+                <Image
+                    style={{ height: 50, width: 50 }}
+                    source={starIcon}
+                />
+            </View>
             <Button title="Go home"
                 onPress={() => navigation.navigate('Home')}
             />
